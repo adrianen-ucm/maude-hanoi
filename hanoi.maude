@@ -1,0 +1,25 @@
+mod HANOI is
+  protecting NAT .
+
+  sorts Tower Hanoi .
+
+  op _|_|_ : Tower Tower Tower -> Hanoi [ctor] .
+  op .     :                   -> Tower [ctor] .
+  op __    : Tower Nat         -> Tower [ctor] .
+  op _<-_  : Tower Nat         -> Bool .
+
+  vars F G      : Nat .
+  vars T1 T2 T3 : Tower .
+
+  eq .    <- F = true .
+  eq T1 G <- F = F < G .
+
+  crl T1 F | T2   | T3   => T1   | T2 F | T3   if T2 <- F .
+  crl T1   | T2 F | T3   => T1 F | T2   | T3   if T1 <- F .
+  crl T1   | T2 F | T3   => T1   | T2   | T3 F if T3 <- F .
+  crl T1   | T2   | T3 F => T1   | T2 F | T3   if T2 <- F .
+  crl T1 F | T2   | T3   => T1   | T2   | T3 F if T3 <- F .
+  crl T1   | T2   | T3 F => T1 F | T2   | T3   if T1 <- F .
+endm
+
+search . 4 3 2 1 | . | . =>* . | . | . 4 3 2 1 .
